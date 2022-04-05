@@ -57,11 +57,11 @@ def decrypt(cipher_text, key):
         # Encryption will be proceeded
         if lower_i in ALPHEBET:
             decrypted = ''
-            if ALPHEBET.find(lower_i) > len(ALPHEBET) - (KEY + 1):
+            if ALPHEBET.find(lower_i) > len(ALPHEBET) - (key + 1):
                 decrypted = ALPHEBET[(ALPHEBET.find(
-                    lower_i) - KEY) % len(ALPHEBET)]
+                    lower_i) - key) % len(ALPHEBET)]
             else:
-                decrypted = ALPHEBET[ALPHEBET.find(lower_i) - KEY]
+                decrypted = ALPHEBET[ALPHEBET.find(lower_i) - key]
             # If the letter is an uppercase,
             # decrypted letter will be uppercased too
             if i.isupper():
