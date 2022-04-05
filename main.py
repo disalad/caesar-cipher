@@ -1,8 +1,8 @@
 ALPHEBET = '0123456789abcdefghijklmnopqrstuvwxyz'
-KEY = 300
+KEY = 3
 
 
-def encode(plain_text, key):
+def encrypt(plain_text, key):
     cipher = ''
     # Iterates through the given plain_text
     for i in plain_text:
@@ -15,11 +15,11 @@ def encode(plain_text, key):
             # When letter index is higher than 32,
             # Letter can't change position by the KEY
             # So the ciphered letter will be started by the beginning
-            if ALPHEBET.find(lower_i) > len(ALPHEBET) - (KEY + 1):
+            if ALPHEBET.find(lower_i) > len(ALPHEBET) - (key + 1):
                 ciphered = ALPHEBET[(ALPHEBET.find(
-                    lower_i) + KEY) % len(ALPHEBET)]
+                    lower_i) + key) % len(ALPHEBET)]
             else:
-                ciphered = ALPHEBET[ALPHEBET.find(lower_i) + KEY]
+                ciphered = ALPHEBET[ALPHEBET.find(lower_i) + key]
             # If the letter is an uppercase,
             # cipher letter will be uppercased too
             if i.isupper():
@@ -32,5 +32,4 @@ def encode(plain_text, key):
             cipher += i
     return cipher
 
-
-print(encode("ds Ah@d59zyxwWXZ9", 1))
+print(encrypt("ds Ah@d59zyxwWXZ9", KEY))
