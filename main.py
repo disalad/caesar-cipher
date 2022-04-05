@@ -14,6 +14,8 @@ parser.add_argument('-k', '--key', nargs=1, metavar='KEY',
                     help='Represents the number of places for the shift', type=int, default=False)
 # -b & --backwards
 parser.add_argument('-b', '--backwards', action='store_true')
+# -s & --source
+parser.add_argument('-s', '--source', action='store_true')
 
 args = parser.parse_args()
 
@@ -86,12 +88,28 @@ if __name__ == "__main__":
             # Extract key as an int from args
             key = int(''.join(map(str, args.key)))
             key *= -1 if args.backwards else 1
-            print("Encrypted: " + encrypt(' '.join(args.encrypt), key))
+            # Get plain text
+            e_value = ' '.join(args.encrypt)
+            # If source presents,
+            # file content will be encrypted
+            if args.source:
+                f = open(e_value, 'r').read()
+                print("Encrypted: \n" + encrypt(f, key))
+            else:
+                print("Encrypted: " + encrypt(e_value, key))
         elif args.decrypt:
             # Extract key as an int from args
             key = int(''.join(map(str, args.key)))
             key *= -1 if args.backwards else 1
-            print("Decrypted: " + decrypt(' '.join(args.decrypt), key))
+            # Get Cipher text
+            d_value = ' '.join(args.decrypt)
+            # If source presents,
+            # file content will be decrypted
+            if args.source:
+                f = open(d_value, 'r').read()
+                print("Decrypted: \n" + decrypt(f, key))
+            else:
+                print("Decrypted: " + decrypt(d_value, key))
             pass
         else:
             raise ValueError("No Arguments given")
