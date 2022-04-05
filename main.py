@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 
 parser = argparse.ArgumentParser(
     description='A tool to Encrypt, Decrypt texts with a substitution cipher given as the key')
@@ -82,10 +83,19 @@ def decrypt(cipher_text, key):
     return plain
 
 
+def write_file(text, path):
+    f = Path(''.join(map(str, path)))
+    if f.exists():
+        raise OSError("File exists")
+    with f.open("w", encoding="utf-8") as f:
+        f.write(text)
+
+
 def main():
     # If key isn't in the args,
     if not args.key and (args.encrypt or args.decrypt):
         raise NameError("Key is not defined")
+    # If the encrypt flag used
     elif args.encrypt:
         # Extract key as an int from args
         key = int(''.join(map(str, args.key)))
@@ -94,11 +104,19 @@ def main():
         e_value = ' '.join(args.encrypt)
         # If source presents,
         # file content will be encrypted
+        cipher = ''
         if args.source:
             f = open(e_value, 'r').read()
-            print("Encrypted: \n" + encrypt(f, key))
+            cipher = encrypt(f, key)
         else:
-            print("Encrypted: " + encrypt(e_value, key))
+            cipher = encrypt(e_value, key)
+        # Write to the file,
+        # If an output path specified
+        if args.output:
+            write_file(cipher, args.output)
+        else:
+            print("Encrypted: " + cipher)
+    # If decrypt flag used,
     elif args.decrypt:
         # Extract key as an int from args
         key = int(''.join(map(str, args.key)))
@@ -112,12 +130,13 @@ def main():
             print("Decrypted: \n" + decrypt(f, key))
         else:
             print("Decrypted: " + decrypt(d_value, key))
+    # If no flags used,
     else:
         raise ValueError("No Arguments given")
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print("Error:", e)
+    # try:
+    main()
+    # except Exception as e:
+    #     print("Error:", e)
