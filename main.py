@@ -14,6 +14,9 @@ parser.add_argument('-k', '--key', nargs=1, metavar='KEY',
                     help='Represents the number of places for the shift', type=int, default=False)
 # -b & --backwards
 parser.add_argument('-b', '--backwards', action='store_true')
+# -o & --output
+parser.add_argument('-o', '--output', nargs=1, type=str,
+                    help='Output file directory')
 # -s & --source
 parser.add_argument('-s', '--source', action='store_true')
 
@@ -79,39 +82,42 @@ def decrypt(cipher_text, key):
     return plain
 
 
+def main():
+    # If key isn't in the args,
+    if not args.key and (args.encrypt or args.decrypt):
+        raise NameError("Key is not defined")
+    elif args.encrypt:
+        # Extract key as an int from args
+        key = int(''.join(map(str, args.key)))
+        key *= -1 if args.backwards else 1
+        # Get plain text
+        e_value = ' '.join(args.encrypt)
+        # If source presents,
+        # file content will be encrypted
+        if args.source:
+            f = open(e_value, 'r').read()
+            print("Encrypted: \n" + encrypt(f, key))
+        else:
+            print("Encrypted: " + encrypt(e_value, key))
+    elif args.decrypt:
+        # Extract key as an int from args
+        key = int(''.join(map(str, args.key)))
+        key *= -1 if args.backwards else 1
+        # Get Cipher text
+        d_value = ' '.join(args.decrypt)
+        # If source presents,
+        # file content will be decrypted
+        if args.source:
+            f = open(d_value, 'r').read()
+            print("Decrypted: \n" + decrypt(f, key))
+        else:
+            print("Decrypted: " + decrypt(d_value, key))
+    else:
+        raise ValueError("No Arguments given")
+
+
 if __name__ == "__main__":
     try:
-        # If key isn't in the args,
-        if not args.key and (args.encrypt or args.decrypt):
-            raise NameError("Key is not defined")
-        elif args.encrypt:
-            # Extract key as an int from args
-            key = int(''.join(map(str, args.key)))
-            key *= -1 if args.backwards else 1
-            # Get plain text
-            e_value = ' '.join(args.encrypt)
-            # If source presents,
-            # file content will be encrypted
-            if args.source:
-                f = open(e_value, 'r').read()
-                print("Encrypted: \n" + encrypt(f, key))
-            else:
-                print("Encrypted: " + encrypt(e_value, key))
-        elif args.decrypt:
-            # Extract key as an int from args
-            key = int(''.join(map(str, args.key)))
-            key *= -1 if args.backwards else 1
-            # Get Cipher text
-            d_value = ' '.join(args.decrypt)
-            # If source presents,
-            # file content will be decrypted
-            if args.source:
-                f = open(d_value, 'r').read()
-                print("Decrypted: \n" + decrypt(f, key))
-            else:
-                print("Decrypted: " + decrypt(d_value, key))
-            pass
-        else:
-            raise ValueError("No Arguments given")
+        main()
     except Exception as e:
         print("Error:", e)
