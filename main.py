@@ -1,5 +1,21 @@
+import argparse
+
+parser = argparse.ArgumentParser(
+    description='A tool to Encrypt, Decrypt texts with a substitution cipher given as the key')
+
+# -e & --encrypt
+parser.add_argument('-e', '--encrypt', nargs='+',
+                    metavar='PLAIN', help='Encrypt the plain text', type=str)
+# -d & --decrypt
+parser.add_argument('-d', '--decrypt', nargs='+', metavar='CIPHER',
+                    help='Decrypt the cipher text', type=str)
+# -k & --key
+parser.add_argument('-k', '--key', nargs=1, metavar='KEY',
+                    help='Represents the number of places for the shift', type=int, default=False)
+
+args = parser.parse_args()
+
 ALPHEBET = '0123456789abcdefghijklmnopqrstuvwxyz'
-KEY = 566
 
 
 def encrypt(plain_text, key):
@@ -59,6 +75,21 @@ def decrypt(cipher_text, key):
     return plain
 
 
-encrypted = encrypt("ds Ah@d59zyxwWXZ9", KEY)
-print('Encrypted:', encrypted)
-print('Decrypted:', decrypt(encrypted, KEY))
+if __name__ == "__main__":
+    try:
+        # If key isn't in the args,
+        if not args.key and (args.encrypt or args.decrypt):
+            raise NameError("Key is not defined")
+        elif args.encrypt:
+            # Extract key as an int from args
+            key = int(''.join(map(str, args.key)))
+            print("Encrypted: " + encrypt(' '.join(args.encrypt), key))
+        elif args.decrypt:
+            # Extract key as an int from args
+            key = int(''.join(map(str, args.key)))
+            print("Decrypted: " + decrypt(' '.join(args.decrypt), key))
+            pass
+        else:
+            raise ValueError("No Arguments given")
+    except Exception as e:
+        print("Error:", e)
