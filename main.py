@@ -125,11 +125,18 @@ def main():
         d_value = ' '.join(args.decrypt)
         # If source presents,
         # file content will be decrypted
+        plain = ''
         if args.source:
             f = open(d_value, 'r').read()
-            print("Decrypted: \n" + decrypt(f, key))
+            plain = decrypt(f, key)
         else:
-            print("Decrypted: " + decrypt(d_value, key))
+            plain = decrypt(d_value, key)
+        # Write to the file,
+        # If an output path specified
+        if args.output:
+            write_file(plain, args.output)
+        else:
+            print("Decrypted: " + plain)
     # If no flags used,
     else:
         raise ValueError("No Arguments given")
