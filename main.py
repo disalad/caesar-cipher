@@ -12,6 +12,8 @@ parser.add_argument('-d', '--decrypt', nargs='+', metavar='CIPHER',
 # -k & --key
 parser.add_argument('-k', '--key', nargs=1, metavar='KEY',
                     help='Represents the number of places for the shift', type=int, default=False)
+# -b & --backwards
+parser.add_argument('-b', '--backwards', action='store_true')
 
 args = parser.parse_args()
 
@@ -83,10 +85,12 @@ if __name__ == "__main__":
         elif args.encrypt:
             # Extract key as an int from args
             key = int(''.join(map(str, args.key)))
+            key *= -1 if args.backwards else 1
             print("Encrypted: " + encrypt(' '.join(args.encrypt), key))
         elif args.decrypt:
             # Extract key as an int from args
             key = int(''.join(map(str, args.key)))
+            key *= -1 if args.backwards else 1
             print("Decrypted: " + decrypt(' '.join(args.decrypt), key))
             pass
         else:
