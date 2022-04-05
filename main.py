@@ -19,7 +19,7 @@ parser.add_argument('-b', '--backwards', action='store_true')
 parser.add_argument('-o', '--output', nargs=1, type=str,
                     help='Output file directory')
 # -s & --source
-parser.add_argument('-s', '--source', action='store_true')
+parser.add_argument('-sf', '--source-from', action='store_true')
 
 args = parser.parse_args()
 
@@ -143,7 +143,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # try:
     main()
-    # except Exception as e:
-    #     print("Error:", e)
