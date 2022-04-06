@@ -19,7 +19,7 @@ parser.add_argument('-b', '--backwards', action='store_true')
 parser.add_argument('-o', '--output', nargs=1, type=str,
                     help='Output file directory')
 # -s & --source
-parser.add_argument('-sf', '--source-from', action='store_true')
+parser.add_argument('-sf', '--sourceFile', action='store_true')
 
 args = parser.parse_args()
 
@@ -105,7 +105,7 @@ def main():
         # If source presents,
         # file content will be encrypted
         cipher = ''
-        if args.source:
+        if args.sourceFile:
             f = open(e_value, 'r').read()
             cipher = encrypt(f, key)
         else:
@@ -126,7 +126,7 @@ def main():
         # If source presents,
         # file content will be decrypted
         plain = ''
-        if args.source:
+        if args.sourceFile:
             f = open(d_value, 'r').read()
             plain = decrypt(f, key)
         else:
