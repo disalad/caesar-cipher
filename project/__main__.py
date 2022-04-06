@@ -1,6 +1,4 @@
-from .crypt import encrypt, decrypt
-from .utils import write_file
-from .crack import bruteforce
+from .handlers import bruteforce_handler, decrypt_handler, encrypt_handler
 import argparse
 
 parser = argparse.ArgumentParser(
@@ -31,67 +29,21 @@ args = parser.parse_args()
 
 
 def handle_args():
-    # If key isn't in the args,
-    if not args.key and (args.encrypt or args.decrypt):
-        raise NameError("Key is not defined")
-    # If the bruteforce flag used
-    elif args.brute:
-        c_value = ' '.join(args.brute)
-        cracked = []
-        if args.sourceFile:
-            f = open(c_value, 'r').read()
-            cracked = bruteforce(f)
+    try:
+        # If key isn't in the args,
+        if not args.key and (args.encrypt or args.decrypt):
+            raise NameError("Key is not defined")
+        # If the bruteforce flag used
+        elif args.bruteforce:
+            bruteforce_handler(args)
+        # If the encrypt flag used
+        elif args.encrypt:
+            encrypt_handler(args)
+        # If decrypt flag used,
+        elif args.decrypt:
+            decrypt_handler(args)
+        # If no flags used,
         else:
-            cracked = bruteforce(c_value)
-        # Write to the file,
-        # If an output path specified
-        if args.output:
-            write_file(cracked, args.output)
-        else:
-            for j in cracked:
-                print(j)
-    # If the encrypt flag used
-    elif args.encrypt:
-        # Extract key as an int from args
-        key = int(''.join(map(str, args.key)))
-        key *= -1 if args.backwards else 1
-        # Get plain text
-        e_value = ' '.join(args.encrypt)
-        # If source presents,
-        # file content will be encrypted
-        cipher = ''
-        if args.sourceFile:
-            f = open(e_value, 'r').read()
-            cipher = encrypt(f, key)
-        else:
-            cipher = encrypt(e_value, key)
-        # Write to the file,
-        # If an output path specified
-        if args.output:
-            write_file(cipher, args.output)
-        else:
-            print("Encrypted: " + cipher)
-    # If decrypt flag used,
-    elif args.decrypt:
-        # Extract key as an int from args
-        key = int(''.join(map(str, args.key)))
-        key *= -1 if args.backwards else 1
-        # Get Cipher text
-        d_value = ' '.join(args.decrypt)
-        # If source presents,
-        # file content will be decrypted
-        plain = ''
-        if args.sourceFile:
-            f = open(d_value, 'r').read()
-            plain = decrypt(f, key)
-        else:
-            plain = decrypt(d_value, key)
-        # Write to the file,
-        # If an output path specified
-        if args.output:
-            write_file(plain, args.output)
-        else:
-            print("Decrypted: " + plain)
-    # If no flags used,
-    else:
-        raise ValueError("No Arguments given")
+            raise ValueError("No Arguments given")
+    except Exception as e:
+        print("Error:", e)
