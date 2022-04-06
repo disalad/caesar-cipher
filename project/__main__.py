@@ -1,5 +1,6 @@
 from .crypt import encrypt, decrypt
 from .utils import write_file
+from .crack import bruteforce
 import argparse
 
 parser = argparse.ArgumentParser(
@@ -22,6 +23,10 @@ parser.add_argument('-o', '--output', nargs=1, type=str,
 # -s & --source
 parser.add_argument('-sf', '--sourceFile', action='store_true')
 
+# -b & --brute
+parser.add_argument('-br', '--bruteforce', nargs='+',
+                    metavar='PLAIN', help='Cipher text to crack', type=str)
+
 args = parser.parse_args()
 
 
@@ -29,6 +34,22 @@ def handle_args():
     # If key isn't in the args,
     if not args.key and (args.encrypt or args.decrypt):
         raise NameError("Key is not defined")
+    # If the bruteforce flag used
+    elif args.brute:
+        c_value = ' '.join(args.brute)
+        cracked = []
+        if args.sourceFile:
+            f = open(c_value, 'r').read()
+            cracked = bruteforce(f)
+        else:
+            cracked = bruteforce(c_value)
+        # Write to the file,
+        # If an output path specified
+        if args.output:
+            write_file(cracked, args.output)
+        else:
+            for j in cracked:
+                print(j)
     # If the encrypt flag used
     elif args.encrypt:
         # Extract key as an int from args
