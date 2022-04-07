@@ -92,7 +92,15 @@ def brute_freq_handler(args):
     # Write to the file,
     # If an output path specified
     if args.output:
-        write_file(analyzed, args.output)
+        s = ''
+        found = False
+        for i in analyzed:
+            if analyzed[i] > 60:
+                s += f'{round(analyzed[i], 1)}% : {i}\n'
+                found = True
+        if not found:
+            s = f'No Matching Sentences Found For The Given Wordlist'
+        write_file(s, args.output)
     else:
         found = False
         for i in analyzed:
