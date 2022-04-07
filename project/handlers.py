@@ -1,6 +1,7 @@
 from .crack import bruteforce
-from .utils import write_file
+from .utils import write_file, analyse_text
 from .crypt import encrypt, decrypt
+import re
 
 
 def bruteforce_handler(args):
@@ -62,3 +63,15 @@ def decrypt_handler(args):
         write_file(plain, args.output)
     else:
         print("Decrypted: " + plain)
+
+
+def freq_analysis_handler(args):
+    text = ''
+    a_value = ' '.join(args.freq_analysis)
+    text = re.sub(r'[^A-Za-z0-9 ]+', '', a_value)
+    matches = analyse_text(text, ''.join(args.wordlist))
+    l = len(text.split(' '))
+    avg = float(matches) / len(text.split(' ')) * 100
+    if avg > 80:
+        print('True')
+    print('False')

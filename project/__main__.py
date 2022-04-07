@@ -1,4 +1,4 @@
-from .handlers import bruteforce_handler, decrypt_handler, encrypt_handler
+from .handlers import bruteforce_handler, decrypt_handler, encrypt_handler, freq_analysis_handler
 import argparse
 
 parser = argparse.ArgumentParser(
@@ -25,6 +25,12 @@ parser.add_argument('-sf', '--sourceFile', action='store_true')
 parser.add_argument('-br', '--bruteforce', nargs='+',
                     metavar='PLAIN', help='Cipher text to crack', type=str)
 
+# -fr & --freq-analysis
+parser.add_argument('-fr', '--freq-analysis', nargs='+', metavar='CIPHER', help='Cipher text to crack by analysing', type=str)
+
+# -w & --wordlist
+parser.add_argument('-w', '--wordlist', nargs=1, metavar='WORDLIST', help='Path to the wordlist containing language words', type=str)
+
 args = parser.parse_args()
 
 
@@ -33,6 +39,8 @@ def handle_args():
         # If key isn't in the args,
         if not args.key and (args.encrypt or args.decrypt):
             raise NameError("Key is not defined")
+        elif args.freq_analysis:
+            freq_analysis_handler(args)
         # If the bruteforce flag used
         elif args.bruteforce:
             bruteforce_handler(args)
