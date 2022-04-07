@@ -1,4 +1,5 @@
-from .handlers import bruteforce_handler, decrypt_handler, encrypt_handler, freq_analysis_handler
+from .handlers import bruteforce_handler, decrypt_handler, encrypt_handler, freq_analysis_handler, brute_freq_handler
+from colorama import Fore, Style
 import argparse
 
 parser = argparse.ArgumentParser(
@@ -26,10 +27,16 @@ parser.add_argument('-br', '--bruteforce', nargs='+',
                     metavar='PLAIN', help='Cipher text to crack', type=str)
 
 # -fr & --freq-analysis
-parser.add_argument('-fr', '--freq-analysis', nargs='+', metavar='CIPHER', help='Cipher text to crack by analysing', type=str)
+parser.add_argument('-fr', '--freq-analysis', nargs='+', metavar='CIPHER',
+                    help='Plain text to crack by analysing', type=str)
 
 # -w & --wordlist
-parser.add_argument('-w', '--wordlist', nargs=1, metavar='WORDLIST', help='Path to the wordlist containing language words', type=str)
+parser.add_argument('-w', '--wordlist', nargs=1, metavar='WORDLIST',
+                    help='Path to the wordlist containing language words', type=str)
+
+# -bfr & --brute-frequency
+parser.add_argument('-bfr', '--brute-frequency', nargs='+', metavar='CIPHER',
+                    help='Cipher to crack and analyse output for the text containing words in a wordlist')
 
 args = parser.parse_args()
 
@@ -39,6 +46,10 @@ def handle_args():
         # If key isn't in the args,
         if not args.key and (args.encrypt or args.decrypt):
             raise NameError("Key is not defined")
+        # If brute frequency flag used,
+        elif args.brute_frequency:
+            brute_freq_handler(args)
+        # If frequency flag used,
         elif args.freq_analysis:
             freq_analysis_handler(args)
         # If the bruteforce flag used
@@ -54,4 +65,4 @@ def handle_args():
         else:
             raise ValueError("No Arguments given")
     except Exception as e:
-        print("Error:", e)
+        print(f'{Fore.LIGHTRED_EX}Error: {e}{Style.RESET_ALL}')
