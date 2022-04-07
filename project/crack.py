@@ -1,6 +1,7 @@
 from .crypt import ALPHEBET, decrypt
 from .utils import analyse_text
 from operator import itemgetter
+from colorama import Fore, Style
 import re
 
 
@@ -8,7 +9,7 @@ def bruteforce(text):
     cracked = []
     # Iterate from 1 to length of the ALPHEBET
     for i in range(1, len(ALPHEBET)):
-        cracked.append('Result with key ' + str(i) + ' ' + decrypt(text, i))
+        cracked.append(f'{Fore.GREEN}{str(i)}{Style.RESET_ALL} : {decrypt(text, i)}')
     return cracked
 
 
@@ -25,5 +26,5 @@ def brute_freq(text, wordlist):
         avg = float(matches) / len(text.split(' ')) * 100
         analysed[text] = avg
     # Sort the analysed texts by average
-    analysed = dict(sorted(analysed.items(), key=itemgetter(1), reverse=True))
-    return analysed
+    sorted_analysed = dict(sorted(analysed.items(), key=itemgetter(1), reverse=True))
+    return [sorted_analysed, analysed]

@@ -29,3 +29,10 @@ def analyse_text(text, wordlist_path):
         if word in wordlist:
             matches += 1
     return matches
+
+
+def get_text(args, prop):
+    if args.sourceFile:
+        return open(' '.join(args.sourceFile), 'r').read()
+    else:
+        return ''.join(vars(args)[prop])

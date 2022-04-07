@@ -21,10 +21,7 @@ def encrypt(plain_text, key):
                 ciphered = ALPHEBET[ALPHEBET.find(lower_i) + key]
             # If the letter is an uppercase,
             # cipher letter will be uppercased too
-            if i.isupper():
-                cipher += ciphered.upper()
-            else:
-                cipher += ciphered
+            cipher += ciphered.upper() if i.isupper() else ciphered
         # If letter doesn't occur in the ALPHEBET,
         # the plain letter will be added to the cipher text
         else:
@@ -47,10 +44,7 @@ def decrypt(cipher_text, key):
                 decrypted = ALPHEBET[ALPHEBET.find(lower_i) - key]
             # If the letter is an uppercase,
             # decrypted letter will be uppercased too
-            if i.isupper():
-                plain += decrypted.upper()
-            else:
-                plain += decrypted
+            plain += decrypted.upper() if i.isupper() else decrypted
         # If letter doesn't occur in the ALPHEBET,
         # the plain letter will be added to the plain text
         else:
