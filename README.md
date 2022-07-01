@@ -23,7 +23,7 @@ This is an example of how to list things you need to use the software and how to
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/disaladamsas/caesar-cipher.git
+   git clone https://github.com/disalad/caesar-cipher.git
    ```
 2. Install 3rd party packages
    ```sh
@@ -38,6 +38,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Disala - damsasdisala@gmail.com
-
-Project Link: [https://github.com/disaladamsas/caesar-cipher](https://github.com/disaladamsas/caesar-cipher)
+Project Link: [https://github.com/disalad/caesar-cipher](https://github.com/disalad/caesar-cipher)
